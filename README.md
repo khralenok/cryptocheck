@@ -6,7 +6,7 @@
 
 - 🔎 Check the current price of any cryptocurrency in various fiat currencies (e.g. USD, EUR, JPY).
 - 📈 Display a list of cryptocurrencies ranked by highest market capitalization.
-- 🌐 Uses live data from a CoinCap API .
+- 🌐 Uses live data from a CoinDesk API .
 
 ## Installation
 
@@ -65,8 +65,7 @@ cryptocheck top --limit 10
 ## Dependencies
 
 1. Go >= 1.20
-2. CoinCap
-3. Frankfurter
+2. CoinDesk
 
 ## License
 
