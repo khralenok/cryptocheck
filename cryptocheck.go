@@ -4,9 +4,19 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	"example.com/cryptocheck/commands"
 )
 
+//To do:
+//1. Add -fiat flag to help command
+
 func main(){
+	helpCmd := flag.NewFlagSet("help", flag.ExitOnError)
+	helpCheck := helpCmd.Bool("check", false, "Show help for the 'check' command")
+	helpTop := helpCmd.Bool("top", false, "Show help for the 'top' command")
+
+
 	checkCmd := flag.NewFlagSet("check", flag.ExitOnError)
 	checkSymbols := checkCmd.String("symbols", "", "Comma-separated list of symbols")
 	checkFiat:= checkCmd.String("fiat", "USD", "Fiat currency")
@@ -15,23 +25,25 @@ func main(){
 	topAmount := topCmd.Int("amount", 10, "Amount of top currencies")
 	topFiat := topCmd.String("fiat", "USD", "Fiat currency")
 
-	if len(os.Args) < 2{
-		fmt.Println("provide a command please")
-		os.Exit(1)
-	}
-
 	switch os.Args[1]{
+	case "help":
+		helpCmd.Parse(os.Args[2:])
+		commands.Help(*helpCheck, *helpTop)
 	case "check":
 		checkCmd.Parse(os.Args[2:])
-		fmt.Println("Check command")
-		fmt.Println("Symbols: ", *checkSymbols)
-		fmt.Println("Fiat: ", *checkFiat)
+		err := commands.Check(checkSymbols, checkFiat)
+		if err != nil{
+			fmt.Println(err)
+			os.Exit(1)
+		}
 		os.Exit(0)
 	case "top":
 		topCmd.Parse(os.Args[2:])
-		fmt.Println("Top command")
-		fmt.Println("Amount: ", *topAmount)
-		fmt.Println("Fiat: ", *topFiat)
+		err := commands.Top(topAmount,topFiat)
+		if err != nil{
+			fmt.Println(err)
+			os.Exit(1)
+		}
 		os.Exit(0)
 	default:
 		fmt.Println("expected some command")
