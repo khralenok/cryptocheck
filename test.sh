@@ -1,0 +1,39 @@
+#!/bin/bash
+echo ""
+echo ""
+
+echo "Test 1: Check Function with only -symbol flag"
+echo "Input: check -symbols="BTC, ETH, SOL, XRP""
+echo "Output:"
+go run . check -symbols="BTC, ETH, SOL, XRP"   
+echo "--------------------"
+
+echo "Test 2: Check Function with both -symbol and -fiat flags"
+echo "Input: check -symbols="BTC, ETH, SOL, XRP" -fiat="VND""
+echo "Output:"
+go run . check -symbols="BTC, ETH, SOL, XRP" -fiat="VND"
+echo "--------------------"
+
+echo "Test 3: Check Function with wrong symbol"
+echo "Input: check -symbols="BTC, ETH, SOLanafff, XRP""
+echo "Output:"
+go run . check -symbols="BTC, ETH, SOLanafff, XRP"
+echo "--------------------"
+
+echo "Test 4: Check Function with all wrong symbols"
+echo "Input: check -symbols="BTClkjklk, ETHdsfsd, SOLanafff, 133Papad4""
+echo "Output:"
+go run . check -symbols="BTClkjklk, ETHdsfsd, SOLanafff, 133Papad4"
+echo "--------------------"
+
+echo "Test 5: Check Function with wrong -fiat flag"
+echo "Input: check -symbols="BTC, ETH, SOL, XRP" -fiat="VgflkgflND""
+echo "Output:"
+go run . check -symbols="BTC, ETH, SOL, XRP" -fiat="VgflkgflND"
+echo "--------------------"
+
+echo "Test 5: Check Function with multiple arguments of -fiat flag"
+echo "Input: check -symbols="BTC, ETH, SOL, XRP" -fiat="VND, RUB""
+echo "Output:"
+go run . check -symbols="BTC, ETH, SOL, XRP" -fiat="VND, RUB"
+echo "--------------------"

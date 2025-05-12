@@ -33,7 +33,7 @@ func FetchAssetMetadata(symbols []string, quoteAsset string) (assetData, error) 
 	err = json.Unmarshal(body, &respJson)
 
 	if err != nil {
-		return nil, errors.New("unexpected response format")
+		return nil, errors.New("can't parse json properly")
 	}
 
 	normalizedData, err := normalizeData(respJson)

@@ -6,12 +6,8 @@ import (
 	"example.com/cryptocheck/utils"
 )
 
-func Top(amount *int,fiat *string) error{
-	normalizedFiat, err := utils.NormalizeFiat(*fiat)
-
-	if err != nil {
-		return err
-	}
+func Top(amount *int, fiat *string) error {
+	normalizedFiat := utils.NormalizeFiat(*fiat)
 
 	fmt.Println("Top command")
 	fmt.Println("Amount: ", *amount)

@@ -4,8 +4,8 @@ import (
 	"strings"
 )
 
-func NormalizeFiat(fiat string)(string, error){
+func NormalizeFiat(fiat string) string {
 	normalizedFiat := strings.Trim(fiat, " ")
 	normalizedFiat = strings.ToUpper(normalizedFiat)
-	return normalizedFiat, nil
+	return normalizedFiat
 }

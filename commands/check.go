@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 
@@ -8,29 +9,35 @@ import (
 	"example.com/cryptocheck/utils"
 )
 
+//To do:
+//1. Handle the case if all symbols are wrong
+//2. Handle the case if -fiat value is wrong
+
 func Check(symbols *string, fiat *string) error {
-	NormalizedSymbols := utils.NormalizedSymbols(*symbols)
-	normalizedFiat, err := utils.NormalizeFiat(*fiat)
+	normalizedSymbols := utils.NormalizedSymbols(*symbols)
+	normalizedFiat := utils.NormalizeFiat(*fiat)
 
-	if err != nil {
-		return err
-	}
-
-	assetMetaData, err := api.FetchAssetMetadata(NormalizedSymbols, normalizedFiat)
+	assetMetaData, err := api.FetchAssetMetadata(normalizedSymbols, normalizedFiat)
 
 	if err != nil {
 		return err
 	}
 
 	for key, value := range assetMetaData {
-		priceAsString := fmt.Sprint(value["PRICE_CONVERSION_VALUE"])
-		price, err := strconv.ParseFloat(priceAsString, 64)
-
-		if err != nil {
-			return err
+		if key == "" {
+			return errors.New("wrong symbol name. try valid symbol please")
 		}
+		if value != nil {
+			priceAsString := fmt.Sprint(value["PRICE_CONVERSION_VALUE"])
+			price, err := strconv.ParseFloat(priceAsString, 64)
 
-		fmt.Printf("%s(%s): %.4f %s\n", value["NAME"], key, price, normalizedFiat)
+			if err != nil {
+				return errors.New("can't convert the price")
+			}
+
+			fmt.Printf("%s(%s): %.4f %s\n", value["NAME"], key, price, normalizedFiat)
+			continue
+		}
 	}
 
 	return nil
