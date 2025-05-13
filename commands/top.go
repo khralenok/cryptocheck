@@ -7,7 +7,7 @@ import (
 )
 
 func Top(amount *int, fiat *string) error {
-	normalizedFiat := utils.NormalizeFiat(*fiat)
+	normalizedFiat, _ := utils.NormalizeFiat(*fiat)
 
 	fmt.Println("Top command")
 	fmt.Println("Amount: ", *amount)

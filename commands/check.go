@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"example.com/cryptocheck/api"
 	"example.com/cryptocheck/utils"
@@ -15,9 +16,13 @@ import (
 
 func Check(symbols *string, fiat *string) error {
 	normalizedSymbols := utils.NormalizedSymbols(*symbols)
-	normalizedFiat := utils.NormalizeFiat(*fiat)
+	normalizedFiat, err := utils.NormalizeFiat(*fiat)
 
-	assetMetaData, err := api.FetchAssetMetadata(normalizedSymbols, normalizedFiat)
+	if err != nil {
+		return err
+	}
+
+	assetMetaData, wrongSymbols, err := api.FetchAssetMetadata(normalizedSymbols, normalizedFiat)
 
 	if err != nil {
 		return err
@@ -38,6 +43,12 @@ func Check(symbols *string, fiat *string) error {
 			fmt.Printf("%s(%s): %.4f %s\n", value["NAME"], key, price, normalizedFiat)
 			continue
 		}
+	}
+
+	if len(wrongSymbols) > 0 && len(assetMetaData) > 0 {
+		fmt.Printf("next symbols doesn't exists: %s\n", strings.Join(wrongSymbols, ", "))
+	} else if len(assetMetaData) == 0 {
+		return errors.New("at least one -symbol flag argument is required")
 	}
 
 	return nil

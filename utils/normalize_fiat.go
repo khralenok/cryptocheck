@@ -1,11 +1,18 @@
 package utils
 
 import (
+	"errors"
 	"strings"
 )
 
-func NormalizeFiat(fiat string) string {
-	normalizedFiat := strings.Trim(fiat, " ")
+func NormalizeFiat(input string) (string, error) {
+	arguments := strings.Split(input, ",")
+
+	if len(arguments) > 1 {
+		return "", errors.New("only one curency accepted as -fiat flag argument")
+	}
+
+	normalizedFiat := strings.Trim(input, " ")
 	normalizedFiat = strings.ToUpper(normalizedFiat)
-	return normalizedFiat
+	return normalizedFiat, nil
 }
