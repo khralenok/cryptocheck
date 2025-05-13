@@ -10,10 +10,6 @@ import (
 	"example.com/cryptocheck/utils"
 )
 
-//To do:
-//1. Handle the case if all symbols are wrong
-//2. Handle the case if -fiat value is wrong
-
 func Check(symbols *string, fiat *string) error {
 	normalizedSymbols := utils.NormalizedSymbols(*symbols)
 	normalizedFiat, err := utils.NormalizeFiat(*fiat)
