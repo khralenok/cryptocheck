@@ -30,25 +30,18 @@ func Top(amount *int, fiat *string) error {
 		return err
 	}
 
-	topList, err := extractValues(rawTopList, *fiat)
+	topList, err := extractTopValues(rawTopList, *fiat)
 
 	if err != nil {
 		return err
 	}
 
-	for index, value := range topList {
-		if index >= *amount {
-			break
-		}
-		circulatingMarketCap := value.circulatingMarketCapUSD * value.conversionRate
-		name := strings.ToUpper(value.name[:1]) + strings.ToLower(value.name[1:])
-		fmt.Printf("%v. %s (%s): %.2f %s\n", index+1, name, value.symbol, circulatingMarketCap, value.fiatName)
-	}
+	outputTopList(topList, *amount)
 
 	return nil
 }
 
-func extractValues(rawList []any, fiat string) ([]topListItem, error) {
+func extractTopValues(rawList []any, fiat string) ([]topListItem, error) {
 	var cleanList []topListItem
 
 	for _, value := range rawList {
@@ -63,7 +56,7 @@ func extractValues(rawList []any, fiat string) ([]topListItem, error) {
 
 			symbol, ok := assetData["SYMBOL"].(string)
 			if !ok {
-				return nil, errors.New("can't parse asset name")
+				return nil, errors.New("can't parse asset symbol")
 			}
 			circulatingMarketCapUSD, ok := assetData["CIRCULATING_MKT_CAP_USD"].(float64)
 			if !ok {
@@ -87,4 +80,15 @@ func extractValues(rawList []any, fiat string) ([]topListItem, error) {
 	}
 
 	return cleanList, nil
+}
+
+func outputTopList(topList []topListItem, amount int) {
+	for index, value := range topList {
+		if index >= amount {
+			break
+		}
+		circulatingMarketCap := value.circulatingMarketCapUSD * value.conversionRate
+		name := strings.ToUpper(value.name[:1]) + strings.ToLower(value.name[1:])
+		fmt.Printf("%v. %s (%s): %.2f %s\n", index+1, name, value.symbol, circulatingMarketCap, value.fiatName)
+	}
 }

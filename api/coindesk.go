@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-type assetData map[string]map[string]interface{}
+type assetData map[string]map[string]any
 
 func FetchAssetMetadata(symbols []string, quoteAsset string) (assetData, []string, error) {
 	url := fmt.Sprintf("https://data-api.coindesk.com/asset/v2/metadata?assets=%s&asset_lookup_priority=SYMBOL&quote_asset=%s&groups=BASIC,PRICE", strings.Join(symbols, ","), quoteAsset)
@@ -81,7 +81,7 @@ func FetchTopAssets(amount int, fiat string) ([]any, error) {
 	return nil, errors.New("can't parse Coindesk API response")
 }
 
-func getResponse(url string) (map[string]interface{}, error) {
+func getResponse(url string) (map[string]any, error) {
 	data, err := http.Get(url)
 
 	if err != nil {

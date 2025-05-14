@@ -23,6 +23,16 @@ func Check(symbols *string, fiat *string) error {
 		return err
 	}
 
+	err = outputCheckList(assetMetaData, wrongSymbols, normalizedFiat)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func outputCheckList(assetMetaData map[string]map[string]any, wrongSymbols []string, fiat string) error {
 	for key, value := range assetMetaData {
 		if key == "" {
 			return errors.New("wrong symbol name. try valid symbol please")
@@ -31,7 +41,7 @@ func Check(symbols *string, fiat *string) error {
 			price, ok := value["PRICE_CONVERSION_VALUE"].(float64)
 
 			if ok {
-				fmt.Printf("%s(%s): %.4f %s\n", value["NAME"], key, price, normalizedFiat)
+				fmt.Printf("%s(%s): %.4f %s\n", value["NAME"], key, price, fiat)
 				continue
 			}
 		}
