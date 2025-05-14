@@ -10,24 +10,11 @@
 
 ## Installation
 
-### Go install (recommended)
-
-If you have Go installed:
-
 ```
 git clone https://github.com/khralenok/cryptocheck.git
 cd cryptocheck
 go build -o cryptocheck
 ./cryptocheck help
-```
-
-### From source
-
-```
-git clone https://github.com/khralenok/cryptocheck.git
-cd cryptocheck
-go build -o cryptocheck
-./cryptocheck
 ```
 
 ## Usage
