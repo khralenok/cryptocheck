@@ -3,7 +3,6 @@ package commands
 import (
 	"errors"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"example.com/cryptocheck/api"
@@ -29,15 +28,12 @@ func Check(symbols *string, fiat *string) error {
 			return errors.New("wrong symbol name. try valid symbol please")
 		}
 		if value != nil {
-			priceAsString := fmt.Sprint(value["PRICE_CONVERSION_VALUE"])
-			price, err := strconv.ParseFloat(priceAsString, 64)
+			price, ok := value["PRICE_CONVERSION_VALUE"].(float64)
 
-			if err != nil {
-				return errors.New("can't convert the price")
+			if ok {
+				fmt.Printf("%s(%s): %.4f %s\n", value["NAME"], key, price, normalizedFiat)
+				continue
 			}
-
-			fmt.Printf("%s(%s): %.4f %s\n", value["NAME"], key, price, normalizedFiat)
-			continue
 		}
 	}
 

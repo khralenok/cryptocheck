@@ -10,5 +10,4 @@ func Help(isForCheck bool, isForTop bool) {
 	} else {
 		fmt.Println("Available commands:\n1. Help\n2. Check\n3. Top")
 	}
-
 }
